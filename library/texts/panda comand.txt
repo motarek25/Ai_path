@@ -1,0 +1,254 @@
+link:http:
+//localhost:8888/notebooks/pandas_go.ipynb
+https://github.com/npantfoerder/cryptocurrencies/blob/master/crypto_clustering.ipynb
+jupyter notebook 
+import pandas as pd
+df = pd.read_csv('stack-overflow-developer-survey-2023/survey_results_public.csv')
+df #to show the data 
+df.shape # to know num of row and colums
+df.info() # to show data with detailes
+pd.set_option('display.max_columns',70)#لتحديد الاعمده و الصفوف
+pd.set_option('display.max_row',4)
+df.head(...)#to show first.... in data (if .... id empty the defult=5)  
+df.dtypes#show the types
+people={
+    "first":["mohamed","kareem","eiad"],
+    "last":["tarek","abdelsalam","abdelsalam"],
+    "email":["mo@gmail.com","km@gmail.com","ed@gmail.com"]}
+  __run > people  ,people['email']
+
+ndf=pd.DataFrame(people) #خلي بالك الحروف تفرق يني لو الديه او الايف لو سمول مش هيشتغل
+ndf.email=ndf['email']
+ndf[['last','email']] # multy
+ndf.columns
+ndf.iloc[0] # in [..] is number of row 
+ndf.iloc[[0,2]] #for multy
+ndf.iloc[[0,2],1]#mean to call colmn 1 from  row 0,2 
+....
+df.loc[0] # in [..] is number of row 
+ndf.loc[[0,2]] #for multy
+ndf.loc[[0,2],'last']#mean to call colmn ' ' from  row 0,2 
+ndf.loc[[0,2],['last','email']]# for multy
+to value_counts() : df['MiscTechHaveWorkedWith'].value_counts()
+df.loc[[0,1,2,3],'MiscTechHaveWorkedWith']=df.loc[0:3,'MiscTechHaveWorkedWith']
+df.loc[0:3,'MiscTechHaveWorkedWith':"AISearchHaveWorkedWith"]
+__________________________:
+ndf.set_index('email')
+ndf.index #to show the index 
+
+ndf.loc['mo@gmail.com']# will show the data for this [.....]
+ndf.loc['mo@gmail.com','...']eill give val of ...  from this email
+#this happen because of ndf.set_index('email') and this work on loc() only not iloc
+note : 
+to return it to original use: ndf.reset_index(inplace=True)
+to make allthe var is indexing use:df_i=pd.read_csv('stack-overflow-developer-survey-2023/survey_results_public.csv',index_col='ResponseId')
+to sort byindex:schema_df.sort_index()
+
+filtering:
+ndf['first']=='mohamed'
+
+f1=ndf['first']=='mohamed'
+ndf[f1]->the val
+ndf.loc[f1]
+ndf.loc[f1,'email']
+condition:
+f1=(ndf['first']=='mohamed')&(ndf['last']=='tarek')  &:is and
+f2=(ndf['first']=='kareem')|(ndf['last']=='tarek')  |:is or
+ndf.loc[-f2,'phone']   : -f2 is mean not like this filltering
+
+s=(ndf['last_name']=='mohamed')
+ndf.loc[s,'first_name']='dado'
+ndf
+
+high_codey= df['ConvertedCompYearly'] >10;df.loc[high_codey]
+df.loc[high_codey,['Currency','OfficeStackSyncHaveWorkedWith']]   :give the result of ['Currency','OfficeStackSyncHaveWorkedWith'] filtering
+
+f_4=df['LanguageWantToWorkWith'].str.contains('Python',na=False)  note:f4=df['LanguageWantToWorkWith'].str.contains('Python') is wrong
+df.loc[f_4,'LanguageWantToWorkWith']
+-update:
+ndf.columns=['first','phone','age','last','email'] #change the arranging of columns
+
+ndf.columns=[x.upper() for x in ndf.columns]#make is upper
+ndf
+
+ndf.columns=[x.lower() for x in ndf.columns]
+ndf
+
+ndf.rename(columns={'first':'first_name','last':'last_name'})# change the name
+ndf.loc[2]=['e@gmail.com','EIAD','mohamed',17,123475992] :#update the val
+ndf.loc[1,'last_name']='mohamed' ==ndf.at[1,'last_name']='salam'   _> as fun      #update single val
+
+df['CompTotal'].nlargest(10)#have the largest
+df.nlargest(10,'CompTotal')
+
+ndf.columns=ndf.columns.str.replace(' ','_')
+ndf
+
+ndf['first_name']=[x.upper() for x in ndf['first_name']]
+ndf
+ndf['first_name']=ndf['first_name'].str.lower()
+ndf
+apply:
+ndf['first_name'].apply(len)
+ndf.apply(len)# defult ,axis='rows'
+ndf.apply(len,axis='columns')
+
+
+ndf.apply(pd.Series.min)=ndf.apply(lambda x:x.min())#to get the min for every column
+
+def u_e(email):
+    return email.upper()
+ndf['email']=ndf['email'].apply(u_e)
+
+ndf['email']=ndf['email'].apply(lambda x:x.lower())#return lower
+
+............................
+ndf['full_name']=ndf['first']+' '+ndf['last'] #make new colume by colmn in datafram
+
+drop col:
+ndf.drop(columns=['first','last'])
+ndf.drop(columns=['first','last'],inplace=True) #inplace=True:to make the cange apply in data
+__________________
+ndf['full_name'].str.split(' ')
+ndf['full_name'].str.split(' ',expand=True)
+add cols by already exist cal:ndf[['first','last']]=ndf['full_name'].str.split(' ',expand=True)
+_____________________________--
+ndf._append(df,ignore_index=True,sort=False)
+
+drop row:
+ndf.drop(index=1)
+ndf.drop(index=ndf[ndf['last']=='tarek'].index)==
+df=ndf['last']=='tarek'
+ndf.drop(index=ndf[df].index)
+sorting:
+ndf['last'].sort_values()
+ndf.sort_values(by='last')
+ndf.sort_values(by='last',ascending=False)#decascending
+ndf.sort_values(by=['last','first'])#sort by last and if the last is the same it will sort by first
+,inplace=True to save change
+df.sort_values(by='Country','',inplace=True)
+df[['Country','Age']].head(100)
+
+grouping:
+df['salary'].median()
+df.describe()
+note:6.300000e+04=63000.00e
+df['Country'].value_counts()#sort the same values
+df['Country'].value_counts(normalize=True) #by%
+
+gp=df.groupby(['Country'])
+gp.get_group('India') ==
+f=df['Country']=='India'
+df.loc[f]
+
+gp['salary'].value_counts().head()
+gp['salary'].value_counts().loc['Afghanistan']
+
+gp['salary'].median().loc['Egypt']
+agg:
+gp['salary'].agg(['median','mean'])
+gp['salary'].agg(['median','mean']).loc['Egypt']
+
+
+df.loc[f]['LanguageWantToWorkWith'].str.contains('Python')
+df.loc[f]['LanguageWantToWorkWith'].str.contains('Python').sum()==gp['LanguageWantToWorkWith'].apply(lambda x:x.str.contains('Python').sum())
+
+ss=gp['LanguageWantToWorkWith'].apply(lambda x:x.str.contains('Python').sum())
+c_r=df['Country'].value_counts()
+py_df=pd.concat([c_r,ss],axis='columns',sort=False)
+py_df['%']=(py_df['LanguageWantToWorkWith']/py_df['count'])*100##pre of people want to learn
+
+gp['LanguageWantToWorkWith'].apply(lambda x:x.str.contains('Python').value_counts(normalize=True))#pre of people want to learn (True) to who not
+
+df['YearsCode'].unique()
+___________cleanind ddata:______________----
+people={
+    "first":["mohamed","kareem","eiad",np.nan,None,'NA'],
+    "last":["tarek","abdelsalam","abdelsalam",np.nan,None,'mising'],
+    "age":[19,20,18,None,None,np.nan],
+    "phone":[1017601886,1017601667,1017601776,None,None,np.nan],
+    "email":["mo@gmail.com","km@gmail.com","ed@gmail.com",'NA','mising',None]}
+
+ndf.dropna()=ndf.dropna(axis='index',how='any')#if any of the val is none or np.nan it will drop
+ndf.dropna(axis='index',how='all')# if all the val of the row is none it will drop else it will keeped
+ndf.dropna(axis='columns',how='any')
+ndf.dropna(axis='columns',how='all')
+ndf.dropna(axis='index',how='all',subset=['email'])=ndf.dropna(axis='index',how='any',subset=['email'])#subset=[...] ,...=the col will it search in
+ndf.dropna(axis='index',how='all',subset=['email','last'])!=ndf.dropna(axis='index',how='any',subset=['email','last'])
+to replace:ndf.replace('mising',None,inplace=True),ndf.replace('NA',np.nan,inplace=True)
+ndf.isna()#to know the none and np.nan data 
+ndf['age']=ndf['age'].astype(float)#to change the type of val note : if you want to change str to int and there are none vals it will not work so chnge it to float 
+
+to deal with datetime:
+d_parser=lambda x:pd.datetime.strptime(x,'%Y-%m-%d- %I-%P')
+dtf=pd.read_csv(' ',parse_dates=['Date'],date_perser=d_parser)
+#search resample,to_Date_name()
+plot:
+%matplotlib inline#run it
+cp['TotalCoinsMined'].plot()
+df['CompTotal'].plot(kind='pie')
+df['CompTotal'].plot(kind='box')
+df['ConvertedCompYearly'].plot(kind='bar')
+
+To csv:
+f=(df['Country']=='Egypt')
+eg=df.loc[f]
+eg.to_csv('stack-overflow-developer-survey-2023/result.csv')
+tsv:eg.to_csv('stack-overflow-developer-survey-2023/result.tsv',sep='\t')
+to excel:eg.to_excel('stack-overflow-developer-survey-2023/result.xlsx')
+ex=pd.read_excel('stack-overflow-developer-survey-2023/result.xlsx')
+eg.to_json('stack-overflow-developer-survey-2023/result.json',orient='records',lines=True)
+ej=pd.read_json('stack-overflow-developer-survey-2023/result.json',orient='records',lines=True)
+to deal with sql:   #didnt work
+from sqlalchemy import create_engine
+import psycopg2
+engine=create_engine('postgresql://root:root@localhost:3306/Local instance MySQL80')
+eg.to_sql('test_table',engine)
+
+__________________________________________________________________________level 2____________________________________________
+df.describe()
+df.query("ResponseId == 20")==df.loc[(df['ResponseId'] == 20)]
+
+#to get val have 'moshtrakat'  from one data
+f=df['Team']=="Dallas Mavericks" 
+n_df=df.loc[f].sort_values(by='Birthday')
+pl_df = pd.DataFrame(combinations(n_df['Player'], 2), columns=["Person 1", "Person 2"])
+p_df = pd.DataFrame(combinations(n_df['Birthday'], 2), columns=["date 1", "date 2"])
+c=pd.concat([pl_df, p_df], axis=1)
+(c.loc[c['date 1']==c['date 2']])
+
+score=[fuzz.partial_ratio(c1, c2) for c1,c2 in df.values]
+df['Ratio Score']=score  # method ispartial_ratio
+
+df['App'].duplicated(keep=False).sum()#theduplicated
+
+df['Price'] = df['Price'].replace('Free', "0").astype(str)
+df.loc[df['Price'].str.contains('$'), 'Price'] = (pd.to_numeric(
+    df.loc[df['Price'].str.contains('$'), 'Price'].str.replace('$', '')))
+df['Price'] = pd.to_numeric(df['Price'])
+
+way_goals_df = df.groupby('home_team')[['result', 'away_goals']].agg(
+    {'result': 'size', 'away_goals': 'sum'}
+).sort_values(
+    by=['result', 'away_goals'], ascending=[False, True]
+).rename(columns={'result': 'games_played', 'away_goals': 'goals_received'})
+
+away_goals_df['ratio'] = away_goals_df['goals_received'] / away_goals_df['games_played']
+df.groupby('home_team').apply(lambda rows: rows['away_goals'].sum() / rows['result'].size).sort_values().head()
+
+
+merge
+import pandas as pd
+
+def combine_two_tables(person: pd.DataFrame, address: pd.DataFrame) -> pd.DataFrame:
+    df = pd.merge(left=person,right=address,how='left',on='personId')[['firstName', 'lastName', 'city', 'state']]
+    return df
+
+
+notes:
+
+tree=tree.where(pd.notnull(tree),-1)
+
+.drop_duplicates:
+def biggest_single_number(my_numbers: pd.DataFrame) -> pd.DataFrame:
+    return my_numbers.drop_duplicates(keep = False).max().to_frame(name = 'num')
