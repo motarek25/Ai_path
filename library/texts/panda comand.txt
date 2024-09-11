@@ -10,6 +10,7 @@ df.info() # to show data with detailes
 pd.set_option('display.max_columns',70)#لتحديد الاعمده و الصفوف
 pd.set_option('display.max_row',4)
 df.head(...)#to show first.... in data (if .... id empty the defult=5)  
+df.tail()(...)#to show last.... in data (if .... id empty the defult=5)  
 df.dtypes#show the types
 people={
     "first":["mohamed","kareem","eiad"],

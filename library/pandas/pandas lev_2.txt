@@ -1,0 +1,113 @@
+import pandas as pd 
+import numpy as np
+my_series=[1,3,5,6,8]
+my_var=pd.Series(my_series)
+my_var
+my_index=["a","b","c","d","e"]
+my_series=[1,3,5,6,8]
+my_var=pd.Series(my_series,index=my_index)
+my_var
+my_var[1]
+my_var["c"]
+from numpy.random import randn
+my_data=randn(4,3)#rows,columns
+my_row=["A","B","C","D"]
+my_col=["sunday","monday","friday"]
+my_df=pd.DataFrame(my_data,my_row,my_col)
+my_df
+df = pd.read_csv('survey_results_public.csv')
+df.loc[[6,9,900]]
+df.shape#(col,rows)
+df.indim#number of dimensions
+df.describe()#show info of the data
+df['WorkExp'].describe()#for specific columns
+df.iloc[:,1]#all iin columns 1 <is the 2 after 0>
+df['Frequency_2'].value_counts(dropna=False):to calc the nan if not (dropna=False)->it will not count nan values
+df['ConvertedCompYearly'].value_counts(normalize=True) #result*100 will give persent %
+to count by the val:df['ConvertedCompYearly'].value_counts()[64254.0]
+df.insert(5,"work",[True]*len(df),True)==df['work']=[True]*len(df)==df2=df.assign(level=[np.nan]*len(df)):to add column in data fram
+f=(df["Q120"]=="I agree")&(df["RemoteWork"]=="Remote")
+df[f]
+df.set_index("Note"):to make Note col is the first
+df.set_index("Note",inplace=True):to make this change permanent
+df.reset_index(inplace=Turre):toreset to original
+stuff={"A":[1,2,3,4,5,np.nan],"B":[6,7,8,9,0,np.nan],"C":[11,12,13,np.nan,14,15]}
+ndf=pd.DataFrame(stuff)
+dropna():drop  the row which have nan val or not have nan val;
+ndf.fillna(value=21):to fill nan values in the data
+ndf.fillna(value=ndf["A"].min())
+ndf.fillna(value=ndf["A"].max())
+ndf.fillna(value=ndf["A"].mean())
+groupby:
+inf=ndf.groupby('A')
+inf.describe()
+inf.max()
+inf.min()
+inf.count()
+inf.sum()
+inf.mean()
+inf....it is crasy if you think it can be done but if can happen
+
+--------------------------------------
+ndf['A'].unique():to show unique val
+
+def cal(x):
+    return f"{x/54}EG"
+pd.DataFrame(df['ConvertedCompYearly'].apply(cal))==pd.DataFrame(df['ConvertedCompYearly'].apply(lambda x:f"{x/54}EG"))
+pd.DataFrame(df[['Frequency_1','Frequency_2','Frequency_3']].apply(lambda x:x=="f")):tocheck this val is |True or false
+
+polt:
+nd.plot(kind='area',stacked=False)
+nd.abs().plot(kind='area',stacked=False)
+nd["mon"].abs().plot(kind='area',stacked=False,alpha=0.9,title='plor area',legend=False)
+nd.abs().plot(kind='bar',stacked=True,title='plor bar')=nd.abs().plot().bar()
+nd.plot(kind='scatter',x='mon',y='sun',c='thur',cmap='hsv')
+nd.plot(kind='hexbin',x='mon',y='sun',gridsize=20,cmap='hsv')
+cmap:its colour can change search in the sit of matplotlib
+nd.plot.kde()=nd.plot(kind='kde')=nd.plot.density()
+..there many kind so search about what you want 
+to more info click shift tab
+
+#https://scikit-learn.org/stable/
+
+from sklearn.datasets import load_diabetes
+db=load_diabetes()
+print(db)
+bdf=pd.DataFrame(db.data,columns=db.feature_names)
+bdf['target']=db.target #from 25 to 346
+# bdf.set_index('target')
+X=bdf.drop('target',axis=1)
+y=bdf['target']
+X.shape,y.shape
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_Test= train_test_split(X,y,test_size=0.2,random_state=42)
+#test_Size=0.2 meaning that 20% of data go for testing and the other is going to train
+print("traning set shap: ",X_train.shape,y_train.shape)
+print("testing set shap: ",X_test.shape,y_Test.shape)
+from sklearn.linear_model import LinearRegression
+#creat linear regression model
+lr=LinearRegression()
+lr
+# train it
+lr.fit(X_train,y_train)
+#predict on the testing
+y_pred=lr.predict(X_test)#Returns predicted values
+y_pred
+y_pred.shape
+from sklearn.metrics import r2_score,mean_squared_error,mean_absolute_error
+r2=r2_score(y_Test,y_pred)
+mse=mean_squared_error(y_Test,y_pred)
+mas=mean_absolute_error(y_Test,y_pred)
+intercept=lr.intercept_
+print("r2_score:",r2)
+print("mean_squared_error:",mse)#avg squar distance between the predict and actual vals the lower is better
+print("mean_absolute_error:",mas)#avg absolute distance between the predict and actual vals the lower is bette
+print("intercept:",intercept)
+import matplotlib.pyplot as plt 
+plt.scatter(y_Test,y_pred,alpha=0.5)
+plt.plot([y.min(),y.max()],[y.min(),y.max()],color='red')
+plt.xlabel('act vals')
+plt.ylabel('pred vals')
+plt.title('val')
+plt.show()
+
